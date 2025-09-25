@@ -2,9 +2,20 @@ import type { Request, Response } from "express";
 import { Category } from "../../models/Category.js";
 
 export async function createCategory(req: Request, res: Response) {
-    const { icon, name } = req.body;
+    try {
+        const { icon, name } = req.body;
 
-    const category = await Category.create({ icon, name });
+        if (!icon || !name) {
+            return res
+                .status(400)
+                .json({ error: "Icon and name are required" });
+        }
 
-    res.json(category);
+        const category = await Category.create({ icon, name });
+
+        res.status(201).json(category);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 }
