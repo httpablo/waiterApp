@@ -9,6 +9,7 @@ import { listProducts } from "./app/useCases/products/listproducts.js";
 import { createProduct } from "./app/useCases/products/createProduct.js";
 import { listProductsByCategory } from "./app/useCases/categories/listProductsByCategory.js";
 import { listOrders } from "./app/useCases/orders/listOrders.js";
+import { createOrder } from "./app/useCases/orders/createOrder.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -45,9 +46,7 @@ router.get("/categories/:categoryId/products", listProductsByCategory);
 router.get("/orders", listOrders);
 
 // Create order
-router.post("/orders", (req, res) => {
-    return res.send("OK");
-});
+router.post("/orders", createOrder);
 
 // Change order status
 router.patch("/orders/:orderId", (req, res) => {
