@@ -11,14 +11,27 @@ interface OrdersBoardProps {
 
 export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+    const [selectedOrder, setSelectedOrder] = React.useState<null | Order>(
+        null
+    );
 
-    function handleOpenOrder() {
+    function handleOpenModal(order: Order) {
         setIsModalVisible(true);
+        setSelectedOrder(order);
+    }
+
+    function handleCloseModal() {
+        setIsModalVisible(false);
+        setSelectedOrder(null);
     }
 
     return (
         <Board>
-            <OrderModal visible={isModalVisible} />
+            <OrderModal
+                visible={isModalVisible}
+                order={selectedOrder}
+                onClose={handleCloseModal}
+            />
 
             <header>
                 <span>{icon}</span>
@@ -30,7 +43,7 @@ export function OrdersBoard({ icon, title, orders }: OrdersBoardProps) {
                 <OrdersContainer>
                     {orders.map((order) => (
                         <button
-                            onClick={handleOpenOrder}
+                            onClick={() => handleOpenModal(order)}
                             type="button"
                             key={order._id}
                         >
