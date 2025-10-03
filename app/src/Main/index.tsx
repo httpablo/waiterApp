@@ -1,11 +1,29 @@
-import { Text } from "react-native";
-import { Container } from "./styles";
+import {
+    Container,
+    CategoriesContainer,
+    MenuContainer,
+    Footer,
+} from "./styles";
+
 import { Header } from "../components/Header";
+import { Categories } from "../components/Categories";
+import { Menu } from "../components/Menu";
 
 export function Main() {
     return (
-        <Container>
-            <Header />
-        </Container>
+        <>
+            <Container>
+                <Header />
+
+                <CategoriesContainer>
+                    <Categories />
+                </CategoriesContainer>
+
+                <MenuContainer>
+                    <Menu />
+                </MenuContainer>
+            </Container>
+            <Footer></Footer>
+        </>
     );
 }
