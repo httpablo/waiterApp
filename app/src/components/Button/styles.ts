@@ -1,12 +1,11 @@
 import styled from "styled-components/native";
-import { TouchableOpacity } from "react-native";
 
 interface ContainerProps {
-    disabled?: boolean;
+    bgColor: string;
 }
 
-export const Container = styled(TouchableOpacity)<ContainerProps>`
-    background: ${({ disabled }) => (disabled ? "#999" : "#D73035")};
+export const Container = styled.TouchableOpacity<ContainerProps>`
+    background: ${(props: { bgColor: any }) => props.bgColor};
     border-radius: 48px;
     padding: 14px 24px;
     align-items: center;

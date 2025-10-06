@@ -8,8 +8,14 @@ interface ButtonProps {
 }
 
 export function Button({ children, onPress, disabled }: ButtonProps) {
+    const backgroundColor = disabled ? "#999" : "#D73035";
+
     return (
-        <Container onPress={onPress} disabled={disabled}>
+        <Container
+            onPress={onPress}
+            disabled={disabled}
+            bgColor={backgroundColor}
+        >
             <Text weight="600" color="#fff">
                 {children}
             </Text>
