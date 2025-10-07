@@ -10,8 +10,17 @@ import { Header } from "../components/Header";
 import { Categories } from "../components/Categories";
 import { Menu } from "../components/Menu";
 import { Button } from "../components/Button";
+import { TableModal } from "../components/TableModal";
+import React from "react";
 
 export function Main() {
+    const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
+    const [selectedTable, setSelectedTable] = React.useState("");
+
+    function handleSAaveTable(table: string) {
+        setSelectedTable(table);
+    }
+
     return (
         <>
             <Container>
@@ -27,11 +36,19 @@ export function Main() {
             </Container>
             <Footer>
                 <FooterConatiner>
-                    <Button onPress={() => alert("Novo pedido")} disabled>
-                        Novo Pedido
-                    </Button>
+                    {!selectedTable && (
+                        <Button onPress={() => setIsTableModalVisible(true)}>
+                            Novo Pedido
+                        </Button>
+                    )}
                 </FooterConatiner>
             </Footer>
+
+            <TableModal
+                visible={isTableModalVisible}
+                onClose={() => setIsTableModalVisible(false)}
+                onSave={handleSAaveTable}
+            />
         </>
     );
 }
