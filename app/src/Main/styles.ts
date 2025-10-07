@@ -4,8 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const isAndroid = Platform.OS === "android";
 
-console.log({ isAndroid, currentHeight: StatusBar.currentHeight });
-
 export const Container = styled(SafeAreaView)`
     margin-top: ${isAndroid ? `${StatusBar.currentHeight}px` : "0"};
     flex: 1;
@@ -15,6 +13,7 @@ export const Container = styled(SafeAreaView)`
 export const CategoriesContainer = styled.View`
     height: 73px;
     margin-top: 34px;
+    margin-bottom: 34px;
 `;
 
 export const MenuContainer = styled.View`

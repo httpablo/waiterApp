@@ -1,3 +1,52 @@
+import { FlatList } from "react-native";
+
+import { products } from "../../mocks/products";
+import { Text } from "../Text";
+
+import {
+    ProductImage,
+    Product,
+    ProductDetails,
+    Separator,
+    AddToCartButton,
+} from "./styles";
+
+import { formatCurrency } from "../../utils/formatCurrency";
+import { PlusCircle } from "../Icons/PlusCircle";
+
 export function Menu() {
-    return null;
+    return (
+        <FlatList
+            data={products}
+            contentContainerStyle={{ paddingHorizontal: 24 }}
+            keyExtractor={(product) => product._id}
+            ItemSeparatorComponent={Separator}
+            renderItem={({ item: product }) => (
+                <Product>
+                    <ProductImage
+                        source={{
+                            uri: `http://10.193.0.70:3001/uploads/${product.imagePath}`,
+                        }}
+                    />
+
+                    <ProductDetails>
+                        <Text weight="600">{product.name}</Text>
+                        <Text
+                            size={14}
+                            color="#666"
+                            style={{ marginVertical: 8 }}
+                        >
+                            {product.description}
+                        </Text>
+                        <Text weight="600" size={14}>
+                            {formatCurrency(product.price)}
+                        </Text>
+                    </ProductDetails>
+                    <AddToCartButton>
+                        <PlusCircle />
+                    </AddToCartButton>
+                </Product>
+            )}
+        />
+    );
 }
