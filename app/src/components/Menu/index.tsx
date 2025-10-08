@@ -15,7 +15,7 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { PlusCircle } from "../Icons/PlusCircle";
 import { ProductModal } from "../ProductModal";
 import React from "react";
-import { Product } from "../types/Products";
+import { Product } from "../types/Product";
 
 export function Menu() {
     const [isModalVisible, setIsModalVisible] = React.useState(false);

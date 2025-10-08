@@ -12,10 +12,23 @@ import { Menu } from "../components/Menu";
 import { Button } from "../components/Button";
 import { TableModal } from "../components/TableModal";
 import React from "react";
+import { Cart } from "../components/Cart";
+import { CartItem } from "../components/types/CartItem";
+import { products } from "../mocks/products";
 
 export function Main() {
     const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
     const [selectedTable, setSelectedTable] = React.useState("");
+    const [cartItems, setCartItems] = React.useState<CartItem[]>([
+        {
+            quantity: 1,
+            product: products[0],
+        },
+        {
+            quantity: 2,
+            product: products[1],
+        },
+    ]);
 
     function handleSaveTable(table: string) {
         setSelectedTable(table);
@@ -49,6 +62,8 @@ export function Main() {
                             Novo Pedido
                         </Button>
                     )}
+
+                    {selectedTable && <Cart cartItems={cartItems} />}
                 </FooterConatiner>
             </Footer>
 
