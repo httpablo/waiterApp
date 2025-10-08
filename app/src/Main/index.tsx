@@ -17,14 +17,22 @@ export function Main() {
     const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
     const [selectedTable, setSelectedTable] = React.useState("");
 
-    function handleSAaveTable(table: string) {
+    function handleSaveTable(table: string) {
         setSelectedTable(table);
+        setIsTableModalVisible(false);
+    }
+
+    function handleCancelOrder() {
+        setSelectedTable("");
     }
 
     return (
         <>
             <Container>
-                <Header />
+                <Header
+                    selectedTable={selectedTable}
+                    onCancelOrder={handleCancelOrder}
+                />
 
                 <CategoriesContainer>
                     <Categories />
@@ -47,7 +55,7 @@ export function Main() {
             <TableModal
                 visible={isTableModalVisible}
                 onClose={() => setIsTableModalVisible(false)}
-                onSave={handleSAaveTable}
+                onSave={handleSaveTable}
             />
         </>
     );

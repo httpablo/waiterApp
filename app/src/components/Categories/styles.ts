@@ -5,7 +5,7 @@ const isAndroid = Platform.OS === "android";
 
 export const Category = styled.TouchableOpacity`
     align-items: center;
-    margin-left: 23px;
+    margin-left: 24px;
 `;
 
 export const Icon = styled.View`
