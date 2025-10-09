@@ -20,14 +20,7 @@ export function Main() {
     const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
     const [selectedTable, setSelectedTable] = React.useState("");
     const [cartItems, setCartItems] = React.useState<CartItem[]>([
-        {
-            quantity: 1,
-            product: products[0],
-        },
-        {
-            quantity: 2,
-            product: products[1],
-        },
+        
     ]);
 
     function handleSaveTable(table: string) {
