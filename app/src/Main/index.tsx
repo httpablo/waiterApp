@@ -14,14 +14,12 @@ import { TableModal } from "../components/TableModal";
 import React from "react";
 import { Cart } from "../components/Cart";
 import { CartItem } from "../components/types/CartItem";
-import { products } from "../mocks/products";
+import { Product } from "../components/types/Product";
 
 export function Main() {
     const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
     const [selectedTable, setSelectedTable] = React.useState("");
-    const [cartItems, setCartItems] = React.useState<CartItem[]>([
-        
-    ]);
+    const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
 
     function handleSaveTable(table: string) {
         setSelectedTable(table);
@@ -30,6 +28,49 @@ export function Main() {
 
     function handleCancelOrder() {
         setSelectedTable("");
+        setCartItems([]);
+    }
+
+    function updateCartItemQuantity(product: Product, change: number) {
+        setCartItems((prevState) => {
+            const itemIndex = prevState.findIndex(
+                (cartItem) => cartItem.product._id === product._id
+            );
+
+            if (itemIndex < 0 && change > 0) {
+                return prevState.concat({
+                    quantity: 1,
+                    product,
+                });
+            }
+
+            const newCartItems = [...prevState];
+            const item = newCartItems[itemIndex];
+
+            if (item.quantity + change <= 0) {
+                newCartItems.splice(itemIndex, 1);
+                return newCartItems;
+            }
+
+            newCartItems[itemIndex] = {
+                ...item,
+                quantity: item.quantity + change,
+            };
+
+            return newCartItems;
+        });
+    }
+
+    function handleAddToCart(product: Product) {
+        if (!selectedTable) {
+            setIsTableModalVisible(true);
+        }
+
+        updateCartItemQuantity(product, 1);
+    }
+
+    function handleDecrementCartItem(product: Product) {
+        updateCartItemQuantity(product, -1);
     }
 
     return (
@@ -45,7 +86,7 @@ export function Main() {
                 </CategoriesContainer>
 
                 <MenuContainer>
-                    <Menu />
+                    <Menu onAddToCart={handleAddToCart} />
                 </MenuContainer>
             </Container>
             <Footer>
@@ -56,7 +97,13 @@ export function Main() {
                         </Button>
                     )}
 
-                    {selectedTable && <Cart cartItems={cartItems} />}
+                    {selectedTable && (
+                        <Cart
+                            cartItems={cartItems}
+                            onAdd={handleAddToCart}
+                            onDecrement={handleDecrementCartItem}
+                        />
+                    )}
                 </FooterConatiner>
             </Footer>
 
