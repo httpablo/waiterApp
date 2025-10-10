@@ -13,20 +13,42 @@ import { Categories } from "../components/Categories";
 import { Menu } from "../components/Menu";
 import { Button } from "../components/Button";
 import { TableModal } from "../components/TableModal";
-import React from "react";
+import React, { useEffect } from "react";
 import { Cart } from "../components/Cart";
 import { CartItem } from "../components/types/CartItem";
 import { Product } from "../components/types/Product";
 
 import { Empty } from "../components/Icons/Empty";
 import { Text } from "../components/Text";
+import { Category } from "../components/types/Category";
+import { api } from "../utils/api";
 
 export function Main() {
     const [isTableModalVisible, setIsTableModalVisible] = React.useState(false);
     const [selectedTable, setSelectedTable] = React.useState("");
     const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [products] = React.useState<Product[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [categories, setCategories] = React.useState<Category[]>([]);
+    const [products, setProducts] = React.useState<Product[]>([]);
+
+    useEffect(() => {
+        Promise.all([api.get("/categories"), api.get("/products")]).then(
+            ([categoriesResponse, productsResponse]) => {
+                setCategories(categoriesResponse.data);
+                setProducts(productsResponse.data);
+                setIsLoading(false);
+            }
+        );
+    }, []);
+
+    async function handleSelectCategory(categoryId: string) {
+        const route = !categoryId
+            ? "/products"
+            : `/categories/${categoryId}/products`;
+
+        const { data } = await api.get(route);
+        setProducts(data);
+    }
 
     function handleSaveTable(table: string) {
         setSelectedTable(table);
@@ -95,7 +117,10 @@ export function Main() {
                 ) : (
                     <>
                         <CategoriesContainer>
-                            <Categories />
+                            <Categories
+                                categories={categories}
+                                onSelectCategory={handleSelectCategory}
+                            />
                         </CategoriesContainer>
 
                         {products.length > 0 ? (

@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 const isAndroid = Platform.OS === "android";
 
-export const Category = styled.TouchableOpacity`
+export const CategoryContainer = styled.TouchableOpacity`
     align-items: center;
     margin-left: 24px;
 `;
@@ -16,7 +16,6 @@ export const Icon = styled.View`
     align-items: center;
     justify-content: center;
     margin-bottom: 8px;
-    ${isAndroid
-        ? "elevation: 2;"
-        : "box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1);"};
+    box-shadow: 0px 2px 1px rgba(0, 0, 0, ${isAndroid ? 0.9 : 0.1});
+    ${isAndroid && "elevation: 2;"}
 `;
