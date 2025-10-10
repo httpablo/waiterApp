@@ -1,44 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "./styles";
 import { OrdersBoard } from "../OrdersBoard";
 import type { Order } from "../../types/Order";
-
-const orders: Order[] = [
-    {
-        _id: "68d566c6476edfe3f7455adf",
-        table: "123",
-        status: "DONE",
-        products: [
-            {
-                product: {
-                    _id: "68d55c8141b60c1758fe92b7",
-                    name: "Pizza quatro queijos",
-                    imagePath: "1758813313757-quatro-queijos.png",
-                    price: 40,
-                },
-                quantity: 3,
-                _id: "68d566c6476edfe3f7455ae0",
-            },
-            {
-                product: {
-                    _id: "68d55c8141b60c1758fe92b7",
-                    name: "Pizza quatro queijos",
-                    imagePath: "1758813313757-quatro-queijos.png",
-                    price: 40,
-                },
-                quantity: 3,
-                _id: "68d566c6476edfe3f7455ae0",
-            },
-        ],
-    },
-];
+import { api } from "../../utils/api";
 
 export function Orders() {
+    const [orders, setOrders] = React.useState<Order[]>([]);
+
+    useEffect(() => {
+        api.get("/orders").then(({ data }) => {
+            setOrders(data);
+        });
+    }, []);
+
+    const waiting = orders.filter((order) => order.status === "WAITING");
+    const inProduction = orders.filter(
+        (order) => order.status === "IN_PRODUCTION"
+    );
+    const done = orders.filter((order) => order.status === "DONE");
+
     return (
         <Container>
-            <OrdersBoard icon="⏱️" title="Fila de espera" orders={orders} />
-            <OrdersBoard icon="👩‍🍳" title="Em preparação" orders={[]} />
-            <OrdersBoard icon="✅" title="Pronto!" orders={[]} />
+            <OrdersBoard icon="⏱️" title="Fila de espera" orders={waiting} />
+            <OrdersBoard
+                icon="👩‍🍳"
+                title="Em preparação"
+                orders={inProduction}
+            />
+            <OrdersBoard icon="✅" title="Pronto!" orders={done} />
         </Container>
     );
 }
