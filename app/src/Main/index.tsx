@@ -30,6 +30,7 @@ export function Main() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [categories, setCategories] = React.useState<Category[]>([]);
     const [products, setProducts] = React.useState<Product[]>([]);
+    const [isLoadingProducts, setIsLoadingProducts] = React.useState(false);
 
     useEffect(() => {
         Promise.all([api.get("/categories"), api.get("/products")]).then(
@@ -46,8 +47,12 @@ export function Main() {
             ? "/products"
             : `/categories/${categoryId}/products`;
 
+        setIsLoadingProducts(true);
+
         const { data } = await api.get(route);
+
         setProducts(data);
+        setIsLoadingProducts(false);
     }
 
     function handleSaveTable(table: string) {
@@ -123,7 +128,14 @@ export function Main() {
                             />
                         </CategoriesContainer>
 
-                        {products.length > 0 ? (
+                        {isLoadingProducts ? (
+                            <CenterContainer>
+                                <ActivityIndicator
+                                    color="#d73035"
+                                    size="large"
+                                />
+                            </CenterContainer>
+                        ) : products.length > 0 ? (
                             <MenuContainer>
                                 <Menu
                                     onAddToCart={handleAddToCart}
@@ -160,6 +172,7 @@ export function Main() {
                             onAdd={handleAddToCart}
                             onDecrement={handleDecrementCartItem}
                             onConfirmOrder={handleResetOrder}
+                            selectedTable={selectedTable}
                         />
                     )}
                 </FooterConatiner>
